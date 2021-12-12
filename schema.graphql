@@ -1,0 +1,38 @@
+type User 
+	@aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+	@aws_auth(cognito_groups: ["user", "admin"])
+{
+	sub: ID!
+	permissions: [String!]!
+}
+
+enum Level {
+	SECRET
+	PUBLIC
+}
+
+type Document 
+	@aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+	@aws_auth(cognito_groups: ["user", "admin"])
+{
+	level: Level!
+	text: String!
+}
+
+type Query {
+	user(sub: ID!): User
+	@aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+	@aws_auth(cognito_groups: ["user", "admin"])
+
+	me: User
+	@aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+	@aws_auth(cognito_groups: ["user", "admin"])
+
+	documents: [Document!]!
+	@aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+	@aws_auth(cognito_groups: ["user", "admin"])
+
+	allUsers: [User!]!
+	@aws_cognito_user_pools(cognito_groups: ["admin"])
+	@aws_auth(cognito_groups: ["admin"])
+}
